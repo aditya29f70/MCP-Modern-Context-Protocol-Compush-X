@@ -1,0 +1,7 @@
+Use the manim-server to create an animation showing the concept of **vector transformation** in linear algebra.
+
+* Start with a 2D coordinate grid.
+* Show two basis vectors: i= (1, 0) in **red** and j=(0,1) in **blue**
+* Animate a transformation by applying a matrix A= [[2,1], [1,1]] to the grid and the vectors.
+* Show the grid warping and the basis vectors moving to their new transformed positions.
+* Add a title above: "Linear Algebra: Matrix Transformation Demo:"
