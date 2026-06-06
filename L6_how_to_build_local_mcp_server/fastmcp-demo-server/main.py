@@ -98,6 +98,81 @@ def summarize(start_date, end_date, category=None):
         cols= [d[0] for d in cur.description]
         return [ dict(zip(cols, r)) for r in cur.fetchall()]
     
+
+@mcp.tool
+def edit_expense(id, date=None, amount=None, category=None, subcategory=None, note=None):
+    """ Edit expense by id """
+    with sqlite3.connect(DB_PATH) as c:
+        query= (
+            """ 
+            UPDATE expenses
+            SET
+            """
+        )
+        param=[]
+
+        if date:
+            query+="date=?"
+            param.append(date)
+        if amount:
+            if date:
+                query+=",amount=?"
+            else:
+                query+="amount=?"
+
+            param.append(amount)
+        if category:
+            if date or amount:
+                query+=",category=?"
+            else:
+                query+="category=?"
+
+            param.append(category)
+        if subcategory:
+            if date or amount or category:
+                query+=",subcategory=?"
+            else:
+                query+="subcategory=?"
+
+            param.append(subcategory)
+        if note:
+            if date or amount or category or note:
+                query+=",note=?"
+            else:
+                query+="note=?"
+
+            param.append(note)
+
+
+        query+= "WHERE id=?"
+        param.append(id)
+
+        cur= c.execute(query, param)
+        c.commit()
+
+        return {"status":"ok", "id":id}
+
+
+@mcp.tool
+def delete_expense(id):
+    """ Delete expense by id """
+    with sqlite3.connect(DB_PATH) as c:
+        cur= c.execute(
+            """
+            DELETE FROM expenses WHERE id= ?
+            """,
+            (id,)
+        )
+        if cur.rowcount==0:
+            return {"status":"error", "message":f"Expense {id} not found"}
+        c.commit()
+
+    
+    return {"status":"ok", 'deleted_id':id}
+        
+
+
+    
 @mcp.resource("expense://categories", mime_type="application/json")
 def categories():
     "Read fresh each time so you can edit the file without restarting"
