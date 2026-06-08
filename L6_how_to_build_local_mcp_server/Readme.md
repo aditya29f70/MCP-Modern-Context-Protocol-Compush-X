@@ -103,3 +103,8 @@ To run your server:
 - that reduce time to add same features in fastmcp language from fastapi
 
 ## now in next video we will convert this mcp server to remote server
+
+- like remote mcp server is located on different device . Benfit
+- - can have mulitple clients
+- - since they run on a powerful server on internet that why they also powerful in compare local server
+- - slow in-compare to local serve bz in local server host and server run on same system
